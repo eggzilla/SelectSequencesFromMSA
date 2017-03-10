@@ -29,15 +29,16 @@ textIdentity text1 text2 = identityPercent
 
 -- | Call for external preprocessClustalForRNAz
 preprocessClustalForRNAzExternal :: String -> String -> Int -> Int -> Int -> Bool -> IO (Either String (String,String))
-preprocessClustalForRNAzExternal clustalFilepath reformatedClustalPath seqenceNumber optimalIdentity maximalIdenity referenceSequence = do
+preprocessClustalForRNAzExternal clustalFilepath outputPath seqenceNumber optimalIdentity maximalIdenity referenceSequence = do
   clustalText <- TI.readFile clustalFilepath
+  let reformatedClustalPath = outputPath ++ "result.reformated"
   --change clustal format for rnazSelectSeqs.pl
   let reformatedClustalText = T.map reformatAln clustalText
   TI.writeFile reformatedClustalPath reformatedClustalText
   --select representative entries from result.Clustal with select_sequences
-  let selectedClustalpath = clustalFilepath ++ ".selected"
-  let sequenceNumberOption = " -n "  ++ show seqenceNumber ++ " "
-  let optimalIdentityOption = " -i "  ++ show optimalIdentity  ++ " "
+  let selectedClustalpath = outputPath ++ "result.selected"
+  let sequenceNumberOption = " -n " ++ show seqenceNumber ++ " "
+  let optimalIdentityOption = " -i " ++ show optimalIdentity  ++ " "
   let maximalIdentityOption = " --max-id="  ++ show maximalIdenity  ++ " "
   let referenceSequenceOption = if referenceSequence then " " else " -x "
   let syscall = "rnazSelectSeqs.pl " ++ reformatedClustalPath ++ " " ++ sequenceNumberOption ++ optimalIdentityOption ++ maximalIdentityOption ++ referenceSequenceOption ++  " >" ++ selectedClustalpath
@@ -48,8 +49,9 @@ preprocessClustalForRNAzExternal clustalFilepath reformatedClustalPath seqenceNu
 
 -- | Call for external preprocessClustalForRNAcode - RNAcode additionally to RNAz requirements does not accept pipe,underscore, doublepoint symbols
 preprocessClustalForRNAcodeExternal :: String -> String -> Int -> Int -> Int -> Bool -> IO (Either String (String,String))
-preprocessClustalForRNAcodeExternal clustalFilepath reformatedClustalPath seqenceNumber optimalIdentity maximalIdenity referenceSequence = do
+preprocessClustalForRNAcodeExternal clustalFilepath outputPath seqenceNumber optimalIdentity maximalIdenity referenceSequence = do
   clustalText <- TI.readFile clustalFilepath
+  let reformatedClustalPath = outputPath ++ "result.reformated"
   --change clustal format for rnazSelectSeqs.pl
   let clustalTextLines = T.lines clustalText
   let headerClustalTextLines = T.unlines (take 2 clustalTextLines)
@@ -57,7 +59,7 @@ preprocessClustalForRNAcodeExternal clustalFilepath reformatedClustalPath seqenc
   let reformatedClustalText = T.map reformatRNACodeAln headerlessClustalTextLines
   TI.writeFile reformatedClustalPath (headerClustalTextLines `T.append` T.singleton '\n' `T.append` reformatedClustalText)
   --select representative entries from result.Clustal with select_sequences
-  let selectedClustalpath = clustalFilepath ++ ".selected"
+  let selectedClustalpath = outputPath ++ "result.selected"
   let sequenceNumberOption = " -n "  ++ show seqenceNumber  ++ " "
   let optimalIdentityOption = " -i "  ++ show optimalIdentity  ++ " "
   let maximalIdentityOption = " --max-id="  ++ show maximalIdenity  ++ " "
@@ -69,11 +71,11 @@ preprocessClustalForRNAcodeExternal clustalFilepath reformatedClustalPath seqenc
   return (Right ([],selectedClustalText))
 
 preprocessClustalForRNAz :: String -> String -> Int -> Double -> Double -> Bool -> IO (Either String (String,String))
-preprocessClustalForRNAz clustalFilepath _ seqenceNumber optimalIdentity maximalIdenity referenceSequence = do
+preprocessClustalForRNAz clustalFilepath outputPath seqenceNumber optimalIdentity maximalIdenity referenceSequence = do
   clustalText <- TI.readFile clustalFilepath
   let clustalTextLines = T.lines clustalText
   parsedClustalInput <- readClustalAlignment clustalFilepath
-  let selectedClustalpath = clustalFilepath ++ ".selected"
+  let selectedClustalpath = outputPath ++ "result.selected"
   if length clustalTextLines > 5
     then
       if isRight parsedClustalInput

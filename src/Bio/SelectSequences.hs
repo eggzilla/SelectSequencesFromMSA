@@ -8,9 +8,11 @@ import Control.Monad
 import System.Console.CmdArgs
 import Bio.SelectSequencesLibrary
 import Data.Either.Unwrap
+import System.Directory
 
 data Options = Options
   { inputClustalPath :: String,
+    outputPath :: String,
     toogleExternalSelectSequences :: Bool,
     seqenceNumber :: Int,
     optimalIdentity :: Double,
@@ -22,6 +24,7 @@ data Options = Options
 options :: Options
 options = Options
   { inputClustalPath = def &= name "c" &= help "Path to input clustal file",
+    outputPath = def &= name "o" &= help "Path to output directory. Default: current working directory",
     toogleExternalSelectSequences = False &= name "e" &= help "Use only replacement of alignment characters and external 'selectSequence.pl'. Default: False",
     seqenceNumber = (6 :: Int) &= name "n" &= help "Number of sequences in the output alignment. (Default: 6)",
     optimalIdentity = (80 :: Double) &= name "i" &= help "Optimize for this percentage of mean pairwise identity (Default: 80)",
@@ -33,20 +36,21 @@ options = Options
 main :: IO ()
 main = do
   Options{..} <- cmdArgs options
-  let reformatedClustalPath = inputClustalPath ++ ".reformated"
+  currentWorkDirectory <- getCurrentDirectory
+  let selectedOutputPath = if null outputPath then currentWorkDirectory else outputPath 
   if toogleExternalSelectSequences
     then do
-      resultStatus <- preprocessClustalForRNAzExternal inputClustalPath reformatedClustalPath seqenceNumber (truncate optimalIdentity) (truncate maximalIdenity) referenceSequence
+      resultStatus <- preprocessClustalForRNAzExternal inputClustalPath (selectedOutputPath ++ "/") seqenceNumber (truncate optimalIdentity) (truncate maximalIdenity) referenceSequence
       if isRight resultStatus
         then do
           let (idMatrix,resultAln) = fromRight resultStatus
-          putStr resultAln
+          return ()
           Control.Monad.unless (null distanceMatrixPath) (writeFile distanceMatrixPath idMatrix)
         else print ("A problem occured selecting sequences: " ++ fromLeft resultStatus)
     else do
-      resultStatus <- preprocessClustalForRNAz inputClustalPath reformatedClustalPath seqenceNumber optimalIdentity maximalIdenity referenceSequence
+      resultStatus <- preprocessClustalForRNAz inputClustalPath (selectedOutputPath ++ "/") seqenceNumber optimalIdentity maximalIdenity referenceSequence
       if isRight resultStatus
         then do
           let (_,resultAln) = fromRight resultStatus
-          putStr resultAln
+          return ()
         else print ("A problem occured selecting sequences: " ++ fromLeft resultStatus)
