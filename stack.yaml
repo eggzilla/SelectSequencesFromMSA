@@ -1,0 +1,6 @@
+flags: {}
+packages:
+- '.'
+extra-deps: []
+compiler-check: newer-minor
+resolver: lts-8.4
