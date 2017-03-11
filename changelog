@@ -1,4 +1,6 @@
 -*-change-log-*-
+1.0.2 Florian Eggenhofer <egg@informatik.uni-freiburg.de> 11. March 2017
+	* Renamed Tool to more specific SelectSequencesFromMSA
 1.0.1 Florian Eggenhofer <egg@informatik.uni-freiburg.de> 10. March 2017
 	* Added output path parameter
 1.0.0 Florian Eggenhofer <egg@informatik.uni-freiburg.de> 10. March 2017
