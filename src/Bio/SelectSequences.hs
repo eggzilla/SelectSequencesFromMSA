@@ -18,7 +18,8 @@ data Options = Options
     optimalIdentity :: Double,
     maximalIdenity :: Double,
     referenceSequence :: Bool,
-    distanceMatrixPath :: String
+    distanceMatrixPath :: String,
+    reformatIdOption :: String
   } deriving (Show,Data,Typeable)
 
 options :: Options
@@ -30,7 +31,8 @@ options = Options
     optimalIdentity = (80 :: Double) &= name "i" &= help "Optimize for this percentage of mean pairwise identity (Default: 80)",
     maximalIdenity = (95 :: Double) &= name "m" &= help "Sequences with a higher percentage of pairwise Identity will be removed. (Default: 95)",
     referenceSequence = True &= name "x" &= help "The first sequence (=reference sequence) is always present in the output alignment per default. Default: True",
-    distanceMatrixPath = "" &= name "d" &= help "Path to distance matrix output file, only internal for interal sequence selection, e.g. /home/user/distmat (Default: )"
+    distanceMatrixPath = "" &= name "d" &= help "Path to distance matrix output file, only internal for interal sequence selection, e.g. /home/user/distmat (Default: )",
+    reformatIdOption = "RNAcode" &= name "r" &= help "Defines how sequence id is reformated, e.g. fitting for RNAcode or not (Default: RNAcode)"
   } &= summary "SelectSequences" &= help "Florian Eggenhofer 2016" &= verbosity
 
 main :: IO ()
@@ -48,7 +50,7 @@ main = do
           Control.Monad.unless (null distanceMatrixPath) (writeFile distanceMatrixPath idMatrix)
         else print ("A problem occured selecting sequences: " ++ fromLeft resultStatus)
     else do
-      resultStatus <- preprocessClustalForRNAz inputClustalPath (selectedOutputPath ++ "/") seqenceNumber optimalIdentity maximalIdenity referenceSequence
+      resultStatus <- preprocessClustalForRNAz inputClustalPath (selectedOutputPath ++ "/") seqenceNumber optimalIdentity maximalIdenity referenceSequence reformatIdOption
       if isRight resultStatus
         then do
           let (_,resultAln) = fromRight resultStatus
