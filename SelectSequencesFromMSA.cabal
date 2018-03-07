@@ -4,13 +4,13 @@ synopsis:            Selects a representative subset of sequences from multiple 
 description:         SelectSequences is a tool for selection of a representative subset of sequences from a multiple sequence alignment in clustal format.
                      .
                      Optional Dependencies:
-		     .
-		     * <https://www.tbi.univie.ac.at/~wash/RNAz/ RNAz>
-
+                     .
+                     * <https://www.tbi.univie.ac.at/~wash/RNAz/ RNAz>
+                     
                      Installation via cabal-install:
                      .
                      > cabal install SelectSequencesFromMSA
-		     
+
 license:             GPL-3
 license-file:        LICENSE
 author:              Florian Eggenhofer

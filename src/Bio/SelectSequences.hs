@@ -39,13 +39,13 @@ main :: IO ()
 main = do
   Options{..} <- cmdArgs options
   currentWorkDirectory <- getCurrentDirectory
-  let selectedOutputPath = if null outputPath then currentWorkDirectory else outputPath 
+  let selectedOutputPath = if null outputPath then currentWorkDirectory else outputPath
   if toogleExternalSelectSequences
     then do
       resultStatus <- preprocessClustalForRNAzExternal inputClustalPath (selectedOutputPath ++ "/") seqenceNumber (truncate optimalIdentity) (truncate maximalIdenity) referenceSequence
       if isRight resultStatus
         then do
-          let (idMatrix,resultAln) = fromRight resultStatus
+          let (idMatrix,_) = fromRight resultStatus
           return ()
           Control.Monad.unless (null distanceMatrixPath) (writeFile distanceMatrixPath idMatrix)
         else print ("A problem occured selecting sequences: " ++ fromLeft resultStatus)
@@ -53,6 +53,5 @@ main = do
       resultStatus <- preprocessClustalForRNAz inputClustalPath (selectedOutputPath ++ "/") seqenceNumber optimalIdentity maximalIdenity referenceSequence reformatIdOption
       if isRight resultStatus
         then do
-          let (_,resultAln) = fromRight resultStatus
           return ()
         else print ("A problem occured selecting sequences: " ++ fromLeft resultStatus)
