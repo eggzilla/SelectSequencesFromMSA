@@ -33,7 +33,7 @@ options = Options
     referenceSequence = True &= name "x" &= help "The first sequence (=reference sequence) is always present in the output alignment per default. Default: True",
     distanceMatrixPath = "" &= name "d" &= help "Path to distance matrix output file, only internal for interal sequence selection, e.g. /home/user/distmat (Default: )",
     reformatIdOption = "RNAcode" &= name "r" &= help "Defines how sequence id is reformated, e.g. fitting for RNAcode or not (Default: RNAcode)"
-  } &= summary "SelectSequences" &= help "Florian Eggenhofer 2016" &= verbosity
+  } &= summary "SelectSequences" &= help "Florian Eggenhofer 2016-2018" &= verbosity
 
 main :: IO ()
 main = do

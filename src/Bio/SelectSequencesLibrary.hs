@@ -75,6 +75,7 @@ preprocessClustalForRNAz clustalFilepath outputPath seqenceNumber optimalIdentit
   clustalText <- TI.readFile clustalFilepath
   let clustalTextLines = T.lines clustalText
   parsedClustalInput <- readClustalAlignment clustalFilepath
+  print parsedClustalInput
   let selectedClustalpath = outputPath ++ "result.selected"
   if length clustalTextLines > 5
     then
