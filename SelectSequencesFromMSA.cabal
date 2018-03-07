@@ -1,7 +1,7 @@
 name:                SelectSequencesFromMSA
 version:             1.0.4
-synopsis:            SelectSequences is a tool for selection of a represenative subset of sequences from a multiple sequence alignment in clustal format.
-description:         SelectSequences is a tool for selection of a represenative subset of sequences from a multiple sequence alignment in clustal format.
+synopsis:            Selects a representative subset of sequences from multiple sequence alignment.
+description:         SelectSequences is a tool for selection of a representative subset of sequences from a multiple sequence alignment in clustal format.
                      .
                      Optional Dependencies:
 		     .
