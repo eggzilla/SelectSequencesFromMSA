@@ -1,5 +1,5 @@
 name:                SelectSequencesFromMSA
-version:             1.0.4
+version:             1.0.5
 synopsis:            Selects a representative subset of sequences from multiple sequence alignment.
 description:         SelectSequences is a tool for selection of a representative subset of sequences from a multiple sequence alignment in clustal format.
                      .
@@ -26,8 +26,8 @@ source-repository head
 
 source-repository this
   type:     git
-  location: https://github.com/eggzilla/SelectSequencesFromMSA/tree/1.0.4
-  tag:      1.0.4
+  location: https://github.com/eggzilla/SelectSequencesFromMSA/tree/1.0.5
+  tag:      1.0.5
                      
 executable SelectSequencesFromMSA
   Hs-Source-Dirs:      ./src/Bio/
@@ -38,5 +38,5 @@ executable SelectSequencesFromMSA
 Library
   Hs-Source-Dirs:      ./src/
   ghc-options:         -Wall -fno-warn-unused-do-bind
-  build-depends:       base >=4.5 && <5, cmdargs, ViennaRNAParser>=1.3.2, process, directory, biofasta, parsec, biocore, bytestring, either-unwrap, containers, ClustalParser>=1.2.2, vector, matrix, filepath, text, transformers, text-metrics
+  build-depends:       base >=4.5 && <5, cmdargs, ViennaRNAParser>=1.3.2, process, directory, biofasta, parsec, biocore, bytestring, either-unwrap, containers, ClustalParser>=1.2.3, vector, matrix, filepath, text, transformers, text-metrics
   Exposed-Modules:     Bio.SelectSequencesLibrary

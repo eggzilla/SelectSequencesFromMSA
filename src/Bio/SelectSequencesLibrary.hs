@@ -28,8 +28,8 @@ textIdentity text1 text2 = identityPercent
          identityPercent = 1 - (fromIntegral distanceDouble/fromIntegral maximumDistance)
 
 -- | Call for external preprocessClustalForRNAz
-preprocessClustalForRNAzExternal :: String -> String -> Int -> Int -> Int -> Bool -> IO (Either String (String,String))
-preprocessClustalForRNAzExternal clustalFilepath outputPath seqenceNumber optimalIdentity maximalIdenity referenceSequence = do
+preprocessClustalForRNAzExternal :: String -> String -> String -> Int -> Int -> Int -> Bool -> IO (Either String (String,String))
+preprocessClustalForRNAzExternal clustalFilepath outputPath outputFileName seqenceNumber optimalIdentity maximalIdenity referenceSequence = do
   clustalText <- TI.readFile clustalFilepath
   let reformatedClustalPath = outputPath ++ "result.reformated"
   --change clustal format for rnazSelectSeqs.pl
@@ -48,8 +48,8 @@ preprocessClustalForRNAzExternal clustalFilepath outputPath seqenceNumber optima
   return (Right ([],selectedClustalText))
 
 -- | Call for external preprocessClustalForRNAcode - RNAcode additionally to RNAz requirements does not accept pipe,underscore, doublepoint symbols
-preprocessClustalForRNAcodeExternal :: String -> String -> Int -> Int -> Int -> Bool -> IO (Either String (String,String))
-preprocessClustalForRNAcodeExternal clustalFilepath outputPath seqenceNumber optimalIdentity maximalIdenity referenceSequence = do
+preprocessClustalForRNAcodeExternal :: String -> String -> String -> Int -> Int -> Int -> Bool -> IO (Either String (String,String))
+preprocessClustalForRNAcodeExternal clustalFilepath outputPath outputFileName seqenceNumber optimalIdentity maximalIdenity referenceSequence = do
   clustalText <- TI.readFile clustalFilepath
   let reformatedClustalPath = outputPath ++ "result.reformated"
   --change clustal format for rnazSelectSeqs.pl
@@ -59,7 +59,7 @@ preprocessClustalForRNAcodeExternal clustalFilepath outputPath seqenceNumber opt
   let reformatedClustalText = T.map reformatRNACodeAln headerlessClustalTextLines
   TI.writeFile reformatedClustalPath (headerClustalTextLines `T.append` T.singleton '\n' `T.append` reformatedClustalText)
   --select representative entries from result.Clustal with select_sequences
-  let selectedClustalpath = outputPath ++ "result.selected"
+  let selectedClustalpath = outputPath ++ outputFileName
   let sequenceNumberOption = " -n "  ++ show seqenceNumber  ++ " "
   let optimalIdentityOption = " -i "  ++ show optimalIdentity  ++ " "
   let maximalIdentityOption = " --max-id="  ++ show maximalIdenity  ++ " "
@@ -70,13 +70,12 @@ preprocessClustalForRNAcodeExternal clustalFilepath outputPath seqenceNumber opt
   selectedClustalText <- readFile selectedClustalpath
   return (Right ([],selectedClustalText))
 
-preprocessClustalForRNAz :: String -> String -> Int -> Double -> Double -> Bool -> String -> IO (Either String (String,String))
-preprocessClustalForRNAz clustalFilepath outputPath seqenceNumber optimalIdentity maximalIdenity referenceSequence reformatOption = do
+preprocessClustalForRNAz :: String -> String -> String -> Int -> Double -> Double -> Bool -> String -> IO (Either String (String,String))
+preprocessClustalForRNAz clustalFilepath outputPath outputFileName seqenceNumber optimalIdentity maximalIdenity referenceSequence reformatOption = do
   clustalText <- TI.readFile clustalFilepath
   let clustalTextLines = T.lines clustalText
   parsedClustalInput <- readClustalAlignment clustalFilepath
-  print parsedClustalInput
-  let selectedClustalpath = outputPath ++ "result.selected"
+  let selectedClustalpath = outputPath ++ outputFileName
   if length clustalTextLines > 5
     then
       if isRight parsedClustalInput

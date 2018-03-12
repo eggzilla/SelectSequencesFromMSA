@@ -1,6 +1,7 @@
 flags: {}
 packages:
 - '.'
-extra-deps: []
+extra-deps:
+ - ClustalParser-1.2.3
 compiler-check: newer-minor
-resolver: lts-10.6
+resolver: lts-10.9
