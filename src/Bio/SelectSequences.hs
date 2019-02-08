@@ -27,7 +27,7 @@ options :: Options
 options = Options
   { inputClustalPath = def &= name "c" &= help "Path to input clustal file",
     outputPath = def &= name "o" &= help "Path to output directory. Default: current working directory",
-    outputFileName = "results.selected" &= name "f" &= help "Output filename. Default: results.selected",
+    outputFileName = "result.selected" &= name "f" &= help "Output filename. Default: result.selected",
     toogleExternalSelectSequences = False &= name "e" &= help "Use only replacement of alignment characters and external 'selectSequence.pl'. Default: False",
     seqenceNumber = (6 :: Int) &= name "n" &= help "Number of sequences in the output alignment. (Default: 6)",
     optimalIdentity = (80 :: Double) &= name "i" &= help "Optimize for this percentage of mean pairwise identity (Default: 80)",
