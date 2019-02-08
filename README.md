@@ -10,7 +10,7 @@ It is available as a commandline tool only.
 
 SelectSequences can be installed with all dependencies via [conda](https://conda.io/docs/install/quick.html). Once you have conda installed simply type:
 
-         conda install -c bioconda selectsequences=1.0.0 
+         conda install -c bioconda selectsequences
 
 ### <u>Available as docker container</u>
 
